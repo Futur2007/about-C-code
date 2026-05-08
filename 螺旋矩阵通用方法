@@ -1,0 +1,27 @@
+螺旋矩阵通用的方法：个人觉得还挺好用的。
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize) {
+    if(matrixSize==0||matrixColSize[0]==0){
+        *returnSize = 0;
+        return NULL;
+    }
+    int rows = matrixSize , columns = matrixColSize[0] ;
+    int total = rows * columns ;
+    int *order = malloc(sizeof(int)*total) ;
+    *returnSize  = 0 ;
+    int left = 0 , right = columns -1, top = 0 ,bottom = rows - 1;
+    while(true){
+        for(int i =left ; i<=right;i++)  order[(*returnSize)++] = matrix[top][i] ;
+        if(++top>bottom) break ;
+        for(int i = top;i<=bottom;i++)   order[(*returnSize)++] = matrix[i][right] ;
+        if(--right < left) break ;
+        for(int  i =right;i>=left;i--) order[(*returnSize)++] = matrix[bottom][i] ;
+        if(--bottom<top) break;
+        for(int i =bottom; i>=top;i--) order[(*returnSize)++] = matrix[i][left] ;
+        if(++left>right) break ;
+    }
+    return order;
+}
+主要就是确定一下四个边界，然后就是模拟的感觉，其实思路还是大差不差的。
