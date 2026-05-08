@@ -1,0 +1,30 @@
+219. 存在重复元素 II
+给你一个整数数组 nums 和一个整数 k ，判断数组中是否存在两个 不同的索引 i 和 j ，满足 nums[i] == nums[j] 且 abs(i - j) <= k 。如果存在，返回 true ；否则，返回 false 。
+示例 1：
+输入：nums = [1,2,3,1], k = 3
+输出：true
+解答：使用结构体太经典，可以让我一下子抓到结构体的作用与意义所在：
+定义出一个类似与int的主体，可以调用。这道题最经典的就是使用结构体先去定义新数组贮存原数组中的数，然后再将其进行排列操作，会自动将相等的数排在一起，但是它的下标又同时跟了过来，然后达到简便思考的目的。
+typedef struct record{
+    int data; //很牛逼的做法啊，要记录下来。
+    int index;
+}record;
+int cmp(const void *a , const void *b){
+    return *(int*)a - *(int*)b;
+}
+bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
+    if(numsSize==0||numsSize==1) return false ;
+    record temp[numsSize];
+    for(int i= 0;i<numsSize;i++){
+        temp[i].data = nums[i];
+        temp[i].index  =  i ;
+    }
+    qsort(temp,numsSize,sizeof(record),cmp);
+    for(int j =0;j<numsSize - 1;j++){
+        if(temp[j].data == temp[j+1].data){
+            if(abs(temp[j].index - temp[j+1].index)<= k ) return true;
+        }
+
+    }
+    return false ;
+}
