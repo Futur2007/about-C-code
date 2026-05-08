@@ -1,0 +1,75 @@
+
+// 主要的思路就是标记，遇到了关于要删除链表的地方，一定要注意实时删除会不改变链表，如果会的的话，在链表格式里面再加入一个数据来标记这个是否要删除就会简单很多，而且链表，双链表，循环链表对于不同问题的解决也有很大的妙处。
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node {
+    int val;
+    struct Node *prev;
+    struct Node *next;
+    int del; // 标记是否删除
+} Node;
+Node* create_list(int n) {
+    Node *head = NULL, *tail = NULL;
+    for (int i = 0; i < n; i++) {
+        Node *node = (Node*)malloc(sizeof(Node));
+        scanf("%d", &node->val);
+        node->prev = node->next = NULL;
+        node->del = 0;
+        if (!head)
+            head = tail = node;
+        else {
+            tail->next = node;
+            node->prev = tail;
+            tail = node;
+        }
+    }
+    return head;
+}
+Node* delete_local_extremes(Node *head) {
+    if (!head || !head->next || !head->next->next) return head;
+    // 第一次遍历：标记局部极值
+    Node *curr = head->next;
+    while (curr && curr->next) {
+        Node *prev = curr->prev;
+        Node *next = curr->next;
+        if ((curr->val > prev->val && curr->val > next->val) ||
+            (curr->val < prev->val && curr->val < next->val)) {
+            curr->del = 1;
+        }
+        curr = curr->next;
+    }
+    // 第二次遍历：删除标记节点
+    Node dummy;
+    dummy.next = head;
+    if (head) head->prev = &dummy;
+    Node *p = &dummy;
+    while (p->next) {
+        if (p->next->del) {
+            Node *tmp = p->next;
+            p->next = tmp->next;
+            if (tmp->next)
+                tmp->next->prev = p;
+            free(tmp);
+        } else {
+            p = p->next;
+        }
+    }
+    return dummy.next;
+}
+void print_list(Node *head) {
+    Node *p = head;
+    while (p) {
+        printf("%d", p->val);
+        if (p->next) printf(" ");
+        p = p->next;
+    }
+    printf("\n");
+}
+int main() {
+    int n;
+    scanf("%d", &n);
+    Node *head = create_list(n);
+    head = delete_local_extremes(head);
+    print_list(head);
+    return 0;
+}
