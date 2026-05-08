@@ -1,0 +1,21 @@
+
+主要思路是：用函数的循环嵌套将path走到底，嵌套中还有的for循环会将直接走到pathTop == k 的位置，然后就可以在前一次运用for循环进行回溯， 即pathTop-- ,即为回溯。
+int *path ;
+int **ans ;
+int pathTop ;
+int ansTop; 
+void backtracking(int n  , int k , int startidx){
+    if(pathTop==k){
+        int *temp =(int*)malloc(sizeof(int)*k)
+        for(int i =0 ; i<n;i++){
+            path[i]=temp[i];
+        }
+        ans[anstop++]=temp ;
+        return ;
+    }
+    for(int j =startidx ;j<=n;j++){
+        path[pathTop++]=j;
+        backtracking(n , k, j+1);
+        pathTop--;
+    }
+}
