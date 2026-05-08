@@ -1,0 +1,37 @@
+    int compare(const void*a,const void *b){
+        return *(int*)a - *(int*)b;
+}      // （这个compare是定义了一个函数的规则）
+
+
+
+      Pair result[n/2];
+        int count = 0;
+        int left = 0,right = n-1;
+        while(left<right){
+                int sum = a[left]+a[right];
+                if(sum==target){
+                        result[count].x = a[left];
+                        result[count].y = a[right];
+                        count  ++;
+                        while(left < right && a[left]==a[left+1])
+                        left++;
+                        while(left<right&&a[right]==a[right-1])
+                        right--;
+                        left++;
+                        right--;
+                }else if(sum>target){
+                        right--;
+                }else{
+                        left++;
+                }
+        }
+//用left与right不断向中间逼近
+#include<stdlib.h>
+ qsort(a,n,sizeof(int),compare);
+这个函数就只能在stdlib.h中用，排序
+二去重、
+typedef struct {
+                int x;  定义一个结构，
+                int y;  命名为Pair
+}Pair;
+
