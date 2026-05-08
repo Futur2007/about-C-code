@@ -1,0 +1,21 @@
+
+void print_yanghui(int n){
+        int line[n];
+        line[0]=1;
+        printf("%d\n",line[0]);
+        if(n>=2){
+                line[1]=1;
+                printf("%d %d\n",line[1],line[1]);
+        }
+        for(int i=2;i<n;i++){
+                for(int j=i;j>0;j--){
+                        line[j]+=line[j-1];
+                }
+                for(int j=0;j<=i;j++){
+                        printf("%d ",line[j]);
+                }
+                printf("\n");
+        }
+}
+主要思路是用新出现的a[i]去拿a[i-1]的值然后让a[i-1]在加上自己与a[i-2]的值即为现在的。
+看内个三角形就知道原理就是头上两个加起来能变成下面那个
